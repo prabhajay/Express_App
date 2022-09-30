@@ -1,0 +1,17 @@
+[
+    {
+        "id":1,
+        "author":"steve",
+        "inStock":false,
+        "title":"the 7 Habits",
+        "section":"self-development"
+    },
+    {
+        "id":2,
+        "author":"uncle bob",
+        "inStock":true,
+        "title":"the exercise",
+        "section":"computer"
+    }
+
+]
