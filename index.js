@@ -3,7 +3,7 @@ const express=require('express')
 const uuid=require('uuid')
 const app=express()
 const PORT=process.env.PORT
-const {saveBook,isVaildBook} = require('./utils/fuction')
+const {saveBook,isVaildBook,updateBook} = require('./utils/fuction')
 const books=require('./data/books.json')
 app.use(express.json());
 
@@ -16,6 +16,24 @@ app.get('/',(req, res)=>{
 app.get('/api/v1/books',(req, res)=>{
     res.send(books)
 })
+
+app.patch('/api/v1/books/:id',(req,res)=>{
+    const book=req.body
+    const index = books.indexOf(bk=>bk.id == book.id)
+    if(index === -1){
+        res.status(404).send(`Book with id ${book?.id} NOT FOUND`)
+        return
+    }
+    const { error, value } = validateBookPatch(book)
+    if(!error)
+    {
+        const updateBook=updateBook(value,books)
+            res.send(updateBook)
+            return
+        }
+            res.status(422).send(error?.details[0]?.message)
+    })
+
 app.post('/api/v1/books',(req,res)=>{
     const book=req.body
     const { error, value } = isVaildBook(book)
