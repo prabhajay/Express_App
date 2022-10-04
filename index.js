@@ -4,12 +4,18 @@ const uuid=require('uuid')
 const app=express()
 const pug=require('pug')
 const PORT=process.env.PORT
+const mongoose= require('mongoose')
 const {saveBook,
     isVaildBook,
     updateBook,
     validateBookPatch
 } = require('./utils/fuction')
 const books=require('./data/books.json')
+const uri='mongodb+srv://admin:root@cluster0.wonm0.mongodb.net/?retryWrites=true&w=majority'
+mongoose.connect(uri,{
+   useNewUrlParser:true,
+   useUnifiedTopology:true 
+}).catch(error=>console.log(error))
 app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine','pug')
