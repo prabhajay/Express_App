@@ -28,20 +28,24 @@ const validateBookPatch= book=>{
     const {error,value}=schema.validate(book)
     return { error ,value}
 }
-const updateBook=(book,books)=>{
-    const index=books.indexOf(bk=>bk.id==book.id)
-    if(index !== -1)
-    {
+const updateBook=(book,books,index)=>{
+    //const index=books.indexOf(bk=>bk.id==book.id)
+    //if(index !== -1)
+    //{
         for(let key in books[index])
         {
-            if (key)
+            if (book[key])
             {
                 books[index][key]=book[key]
             }
         }
-   // books[index]= book
+   return books[index]
 }
-return null
-}
+//return null
+//}
 
-module.exports = {saveBook:createBook,isVaildBook,validateBookPatch,updateBook}
+module.exports = {
+    createBook,
+    isVaildBook,
+    validateBookPatch,
+    updateBook}
