@@ -1,21 +1,21 @@
 require('dotenv').config()
+require('./db/index')()
 const express=require('express')
 const uuid=require('uuid')
 const app=express()
+const cors=require('cors')
 const pug=require('pug')
 const PORT=process.env.PORT
-const mongoose= require('mongoose')
-const {saveBook,
-    isVaildBook,
-    updateBook,
-    validateBookPatch
-} = require('./utils/fuction')
+
 const books=require('./data/books.json')
-const uri='mongodb+srv://admin:root@cluster0.wonm0.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect(uri,{
-   useNewUrlParser:true,
-   useUnifiedTopology:true 
-}).catch(error=>console.log(error))
+const {
+    getBooks,
+    createBook,
+    updateBook,
+    deleteBook,
+    getBook
+  } = require('./controller/book.controller')
+app.use(cors())
 app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine','pug')
@@ -26,9 +26,10 @@ app.get('/',(req, res)=>{
     res.send('welcome my page')
 })
 
-app.get('/api/v1/books',(req, res)=>{
-    res.send(books)
-})
+app.get('/api/v1/books', getBooks)
+//app.post('/api/v1/books', createBook)
+//app.patch('/api/v1/books/:id',updateBook)
+
 
 app.get('/api/v1/books/:id',(req, res)=>{
     //const indexOf = (books,func)=>{
@@ -56,39 +57,23 @@ return
 
 })
 
-app.post('/api/v1/books',(req,res)=>{
-    const book=req.body
-    const { error, value } = isVaildBook(book)
-    if(value && !error)
-    {
-        const newBook=saveBook(value,books)
-        res.send(newBook)
-        return
-    }
+//app.post('/api/v1/books', createBook)
+//(req,res)=>{
+  //  const book=req.body
+    //const { error, value } = isVaildBook(book)
+    //if(value && !error)
+    //{
+      //  const newBook=saveBook(value,books)
+        //res.send(newBook)
+        //return
+//}
    // const errors= error?.details.map(err=>err.message)
-    res.status(422).send(error?.details[0]?.message)
+   // res.status(422).send(error?.details[0]?.message)
    // console.log(book)
    //isVaildBook(book)
    //res.send(book)
-})
+//})
 
-app.patch('/api/v1/books/:id',(req,res)=>{
-    const book=req.body
-    const {id}=req.params
-    const index = books.findIndex(bk=>bk.id == id)
-    if(index === -1){
-        res.status(404).send(`Book with id ${id} NOT FOUND`)
-        return
-    }
-    const { error, value } = validateBookPatch(book)
-    if(!error)
-    {
-        const updateBook=updateBook(value,books,index)
-            res.send(updateBook)
-            return
-        }
-            res.status(422).send(error?.details[0]?.message)
-    })
 
 app.delete('/api/v1/books/:id',(req,res)=>{
     //const book=req.body
@@ -119,7 +104,10 @@ app.get('*',(req,res)=>{
     res.status(404).send('<p style="color:red;font-size:22px">Not found</p>')
 })
 
+
+
 //start the server 
 app.listen(PORT,()=>{
     console.log(`server started on port ${PORT}`)
 })
+
