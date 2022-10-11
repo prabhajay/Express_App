@@ -27,7 +27,7 @@ app.get('/',(req, res)=>{
 })
 
 app.get('/api/v1/books', getBooks)
-//app.post('/api/v1/books', createBook)
+app.post('/api/v1/books', createBook)
 //app.patch('/api/v1/books/:id',updateBook)
 
 
@@ -110,4 +110,3 @@ app.get('*',(req,res)=>{
 app.listen(PORT,()=>{
     console.log(`server started on port ${PORT}`)
 })
-

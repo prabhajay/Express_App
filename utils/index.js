@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const isVaildBook = book => {
+const isValidBook = book => {
   /* Create schema */
   const schema = Joi.object({
     author: Joi.string().min(3).max(512).required(),
@@ -10,8 +10,8 @@ const isVaildBook = book => {
       .valid('computer', 'self-development', 'fictions')
       .required(),
     addedOnDate: Joi.date(),
-    qty: Joi.number()
-   
+    qty: Joi.number(),
+    coverPhoto: Joi.string()
   })
 
   const { error, value } = schema.validate(book)
@@ -27,14 +27,14 @@ const validateBookPatch = book => {
     inStock: Joi.boolean(),
     section: Joi.string().valid('computer', 'self-development', 'fictions'),
     addedOnDate: Joi.date(),
-    qty: Joi.number()
-    
+    qty: Joi.number(),
+    coverPhoto: Joi.string()
   })
   const { error, value } = schema.validate(book)
   return { error, value }
 }
 
 module.exports = {
-  isVaildBook,
+  isValidBook,
   validateBookPatch
 }

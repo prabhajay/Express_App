@@ -36,9 +36,17 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  coverPhoto: {
+    type: String
+  }/*,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId
+  }*/
 })
 
-//create models
-const Book=mongoose.model('Book',bookSchema)
+/* 
+Model
+ */
+const Book = mongoose.model('Book', bookSchema)
 
 module.exports = Book
